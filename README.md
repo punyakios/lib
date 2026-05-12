@@ -150,7 +150,7 @@ app.post('/callback', (req, res) => {
     "status": "success",
     "message": "Payment request created",
     "data": {
-        "checkout_url": "https://v1.maktopup.com/pay/ORD-123",
+        "checkout_url": "https://v1.maktopup.com/pay/8kR2mN9pLwXz4qYt",
         "external_id": "ORD-123",
         "qris_string": "00020101021226650013...",
         "amount": 10000
