@@ -11,7 +11,42 @@ Library resmi untuk memudahkan integrasi Merchant API PunyaKios.
 - `/nodejs`: SDK untuk Node.js (Fetch based)
 - `/javascript`: SDK untuk Browser/Client-side
 
----
+## 🌐 Manual API Integration
+Jika kamu tidak ingin menggunakan SDK, kamu bisa melakukan request manual menggunakan `cURL` atau HTTP Client lainnya.
+
+**Base URL:** `https://v1.maktopup.com/api/merchant`
+
+**Headers:**
+- `X-API-Key`: (API Key Merchant kamu)
+- `Content-Type`: `application/json`
+- `Accept`: `application/json`
+
+### 1. Create Payment (QRIS)
+```bash
+curl -X POST https://v1.maktopup.com/api/merchant/payment-request \
+  -H "X-API-Key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "external_id": "ORD-123",
+    "amount": 10000,
+    "description": "Pembayaran Kopi",
+    "callback_url": "https://websitemu.com/callback"
+  }'
+```
+
+### 2. Get Transactions
+```bash
+curl -X GET https://v1.maktopup.com/api/merchant/transactions \
+  -H "X-API-Key: YOUR_API_KEY"
+```
+
+### 3. Get Status
+```bash
+curl -X GET https://v1.maktopup.com/api/merchant/transactions/ORD-123 \
+  -H "X-API-Key: YOUR_API_KEY"
+```
+
+## 🚀 Penggunaan Library (SDK)
 
 ## 🐘 PHP Usage
 
@@ -31,11 +66,9 @@ $response = $sdk->createPaymentRequest([
 
 // Cek Riwayat Transaksi
 $history = $sdk->getTransactions();
-print_r($history['data']);
 
 // Cek Status Transaksi Spesifik
-$status = $sdk->getTransactionStatus('ORDER-101');
-echo "Status: " . $status['data']['status'];
+$status = $sdk->getTransactionStatus('ORD-101');
 ```
 
 ---
@@ -46,6 +79,15 @@ echo "Status: " . $status['data']['status'];
 const PunyaKios = require('./lib/nodejs/PunyaKios');
 
 const sdk = new PunyaKios('YOUR_API_KEY');
+
+// Create QRIS
+sdk.createPaymentRequest({...});
+
+// Cek Riwayat
+sdk.getTransactions().then(res => console.log(res));
+
+// Cek Status
+sdk.getTransactionStatus('ORD-101').then(res => console.log(res));
 
 async function test() {
     // Create QRIS
@@ -158,6 +200,37 @@ app.post('/callback', (req, res) => {
         "external_id": "ORD-123",
         "qris_string": "00020101021226650013...",
         "amount": 10000
+    }
+}
+```
+
+### Response: Cek Riwayat Transaksi
+```json
+{
+    "status": "success",
+    "data": [
+        {
+            "external_id": "ORD-101",
+            "slug": "8kR2mN9pLwXz4qYt",
+            "amount": 10000,
+            "status": "success",
+            "created_at": "2026-05-13 03:00:00"
+        }
+    ]
+}
+```
+
+### Response: Cek Status Transaksi
+```json
+{
+    "status": "success",
+    "data": {
+        "external_id": "ORD-101",
+        "slug": "8kR2mN9pLwXz4qYt",
+        "amount": 10000,
+        "status": "success",
+        "paid_at": "2026-05-13 03:05:00",
+        "qris_string": "00020101021226650013..."
     }
 }
 ```
