@@ -19,14 +19,14 @@ class PunyaKios {
      * Get merchant transaction history
      */
     async getTransactions() {
-        return this.request('GET', '/transactions');
+        return this.request('POST', '/transactions');
     }
 
     /**
      * Check specific transaction status
      */
     async getTransactionStatus(external_id) {
-        return this.request('GET', `/transactions/${external_id}`);
+        return this.request('POST', '/check-status', { external_id });
     }
 
     /**

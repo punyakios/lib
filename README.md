@@ -36,14 +36,16 @@ curl -X POST https://v1.maktopup.com/api/merchant/payment-request \
 
 ### 2. Get Transactions
 ```bash
-curl -X GET https://v1.maktopup.com/api/merchant/transactions \
+curl -X POST https://v1.maktopup.com/api/merchant/transactions \
   -H "X-API-Key: YOUR_API_KEY"
 ```
 
 ### 3. Get Status
 ```bash
-curl -X GET https://v1.maktopup.com/api/merchant/transactions/ORD-123 \
-  -H "X-API-Key: YOUR_API_KEY"
+curl -X POST https://v1.maktopup.com/api/merchant/check-status \
+  -H "X-API-Key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{ "external_id": "ORD-123" }'
 ```
 
 ## 🚀 Penggunaan Library (SDK)
