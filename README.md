@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="logo.png" alt="PunyaKios Logo" width="200">
+</p>
+
 # PunyaKios Merchant SDK
 
 Library resmi untuk memudahkan integrasi Merchant API PunyaKios.
