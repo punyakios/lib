@@ -12,6 +12,10 @@ const PunyaKios = (function() {
             return this.request('POST', '/payment-request', data);
         }
 
+        async getProfile() {
+            return this.request('POST', '/profile');
+        }
+
         async getTransactions() {
             return this.request('POST', '/transactions');
         }

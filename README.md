@@ -34,13 +34,13 @@ curl -X POST https://v1.maktopup.com/api/merchant/payment-request \
   }'
 ```
 
-### 2. Get Transactions
+### 2. Get Merchant Profile
 ```bash
-curl -X POST https://v1.maktopup.com/api/merchant/transactions \
+curl -X POST https://v1.maktopup.com/api/merchant/profile \
   -H "X-API-Key: YOUR_API_KEY"
 ```
 
-### 3. Get Status
+### 3. Get Transactions
 ```bash
 curl -X POST https://v1.maktopup.com/api/merchant/check-status \
   -H "X-API-Key: YOUR_API_KEY" \
@@ -65,6 +65,9 @@ $response = $sdk->createPaymentRequest([
     'description' => 'Pembayaran Kopi',
     'callback_url' => 'https://websitemu.com/callback.php' // URL untuk terima notifikasi lunas
 ]);
+
+// Cek Profil Merchant
+$profile = $sdk->getProfile();
 
 // Cek Riwayat Transaksi
 $history = $sdk->getTransactions();
@@ -206,6 +209,24 @@ app.post('/callback', (req, res) => {
 }
 ```
 
+### Response: Profil Merchant
+```json
+{
+    "status": true,
+    "message": "Merchant profile retrieved successfully",
+    "data": {
+        "id": 123,
+        "name": "Budi Santoso",
+        "username": "budi_merchant",
+        "email": "budi@email.com",
+        "phone": "08123456789",
+        "business_name": "Toko Budi Digital",
+        "created_at": "2026-05-13T02:00:00.000000Z",
+        "updated_at": "2026-05-13T02:00:00.000000Z"
+    }
+}
+```
+
 ### Response: Cek Riwayat Transaksi
 ```json
 {
@@ -218,7 +239,12 @@ app.post('/callback', (req, res) => {
             "status": "success",
             "created_at": "2026-05-13 03:00:00"
         }
-    ]
+    ],
+    "pagination": {
+        "total": 1,
+        "current_page": 1,
+        "last_page": 1
+    }
 }
 ```
 
@@ -231,6 +257,8 @@ app.post('/callback', (req, res) => {
         "slug": "8kR2mN9pLwXz4qYt",
         "amount": 10000,
         "status": "success",
+        "description": "Pembayaran Tagihan",
+        "created_at": "2026-05-13 03:00:00",
         "paid_at": "2026-05-13 03:05:00",
         "qris_string": "00020101021226650013..."
     }

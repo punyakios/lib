@@ -18,6 +18,13 @@ class PunyaKios {
     }
 
     /**
+     * Get merchant profile information
+     */
+    public function getProfile() {
+        return $this->request('POST', '/profile');
+    }
+
+    /**
      * Get merchant transaction history
      */
     public function getTransactions() {

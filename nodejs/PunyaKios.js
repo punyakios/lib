@@ -16,6 +16,13 @@ class PunyaKios {
     }
 
     /**
+     * Get merchant profile information
+     */
+    async getProfile() {
+        return this.request('POST', '/profile');
+    }
+
+    /**
      * Get merchant transaction history
      */
     async getTransactions() {
