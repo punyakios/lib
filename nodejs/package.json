@@ -1,7 +1,7 @@
 {
   "name": "punyakios-sdk",
-  "version": "1.0.1",
-  "description": "Official Node.js SDK for PunyaKios Merchant API",
+  "version": "1.0.2",
+  "description": "The Official Node.js SDK for PunyaKios Merchant API",
   "main": "PunyaKios.js",
   "files": [
     "PunyaKios.js",

@@ -1,8 +1,24 @@
 /**
  * PunyaKios SDK for Node.js (v18+)
+ * The Official SDK for PunyaKios Merchant API
  */
+const crypto = require('crypto');
+
 class PunyaKios {
+    /**
+     * Transaction Status Constants
+     */
+    static STATUS = {
+        PENDING: 'pending',
+        SUCCESS: 'success',
+        FAILED: 'failed',
+        EXPIRED: 'expired'
+    };
+
     constructor(apiKey, baseUrl = 'https://punyakios.web.id/api/merchant') {
+        if (!apiKey) {
+            throw new Error('PunyaKios SDK Error: API Key is required');
+        }
         this.apiKey = apiKey;
         this.baseUrl = baseUrl.replace(/\/$/, '');
     }
@@ -31,8 +47,12 @@ class PunyaKios {
 
     /**
      * Check specific transaction status
+     * @param {string} external_id - The external ID of the transaction
      */
     async getTransactionStatus(external_id) {
+        if (!external_id) {
+            throw new Error('PunyaKios SDK Error: external_id is required');
+        }
         return this.request('POST', '/check-status', { external_id });
     }
 
@@ -42,9 +62,34 @@ class PunyaKios {
      */
     static parseCallback(body) {
         if (typeof body === 'string') {
-            return JSON.parse(body);
+            try {
+                return JSON.parse(body);
+            } catch (e) {
+                throw new Error('PunyaKios SDK Error: Invalid JSON in callback body');
+            }
         }
         return body;
+    }
+
+    /**
+     * Verify callback signature to ensure it's from PunyaKios
+     * @param {Object|String} body - The raw request body
+     * @param {String} signature - The X-PunyaKios-Signature header
+     * @param {String} secretKey - Your API Key (used as secret)
+     */
+    static verifySignature(body, signature, secretKey) {
+        if (!signature || !secretKey) return false;
+        
+        const payload = typeof body === 'string' ? body : JSON.stringify(body);
+        const expectedSignature = crypto
+            .createHmac('sha256', secretKey)
+            .update(payload)
+            .digest('hex');
+            
+        return crypto.timingSafeEqual(
+            Buffer.from(signature),
+            Buffer.from(expectedSignature)
+        );
     }
 
     async request(method, endpoint, data = null) {
@@ -53,7 +98,8 @@ class PunyaKios {
             headers: {
                 'X-API-Key': this.apiKey,
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'User-Agent': 'PunyaKios-NodeSDK/1.0.2'
             }
         };
 
@@ -67,6 +113,7 @@ class PunyaKios {
             
             return {
                 status_code: response.status,
+                success: response.ok,
                 data: result
             };
         } catch (error) {

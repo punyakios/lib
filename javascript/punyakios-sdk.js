@@ -3,9 +3,19 @@
  */
 const PunyaKios = (function() {
     class SDK {
-        constructor(apiKey) {
+        /**
+         * Transaction Status Constants
+         */
+        static STATUS = {
+            PENDING: 'pending',
+            SUCCESS: 'success',
+            FAILED: 'failed',
+            EXPIRED: 'expired'
+        };
+
+        constructor(apiKey, baseUrl = 'https://punyakios.web.id/api/merchant') {
             this.apiKey = apiKey;
-            this.baseUrl = 'https://punyakios.web.id/api/merchant';
+            this.baseUrl = baseUrl.replace(/\/$/, '');
         }
 
         async createPaymentRequest(data) {
@@ -30,7 +40,8 @@ const PunyaKios = (function() {
                 headers: {
                     'X-API-Key': this.apiKey,
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    'X-SDK-Platform': 'Browser'
                 }
             };
 
@@ -43,7 +54,7 @@ const PunyaKios = (function() {
                 const result = await response.json();
                 
                 return {
-                    status: response.ok,
+                    success: response.ok,
                     status_code: response.status,
                     data: result
                 };
