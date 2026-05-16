@@ -2,9 +2,9 @@
  * PunyaKios SDK for Node.js (v18+)
  */
 class PunyaKios {
-    constructor(apiKey) {
+    constructor(apiKey, baseUrl = 'https://punyakios.web.id/api/merchant') {
         this.apiKey = apiKey;
-        this.baseUrl = 'https://v1.maktopup.com/api/merchant';
+        this.baseUrl = baseUrl.replace(/\/$/, '');
     }
 
     /**

@@ -14,7 +14,7 @@ Library resmi untuk memudahkan integrasi Merchant API PunyaKios.
 ## 🌐 Manual API Integration
 Jika kamu tidak ingin menggunakan SDK, kamu bisa melakukan request manual menggunakan `cURL` atau HTTP Client lainnya.
 
-**Base URL:** `https://v1.maktopup.com/api/merchant`
+**Base URL:** `https://punyakios.web.id/api/merchant`
  
 **Headers:**
 - `X-API-Key`: (API Key Merchant kamu)
@@ -23,7 +23,7 @@ Jika kamu tidak ingin menggunakan SDK, kamu bisa melakukan request manual menggu
 
 ### 1. Create Payment (QRIS)
 ```bash
-curl -X POST https://v1.maktopup.com/api/merchant/payment-request \
+curl -X POST https://punyakios.web.id/api/merchant/payment-request \
   -H "X-API-Key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -36,13 +36,13 @@ curl -X POST https://v1.maktopup.com/api/merchant/payment-request \
 
 ### 2. Get Merchant Profile
 ```bash
-curl -X POST https://v1.maktopup.com/api/merchant/profile \
+curl -X POST https://punyakios.web.id/api/merchant/profile \
   -H "X-API-Key: YOUR_API_KEY"
 ```
 
 ### 3. Get Transactions
 ```bash
-curl -X POST https://v1.maktopup.com/api/merchant/check-status \
+curl -X POST https://punyakios.web.id/api/merchant/check-status \
   -H "X-API-Key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{ "external_id": "ORD-123" }'
@@ -201,7 +201,7 @@ app.post('/callback', (req, res) => {
     "status": "success",
     "message": "Payment request created",
     "data": {
-        "checkout_url": "https://v1.maktopup.com/pay/8kR2mN9pLwXz4qYt",
+        "checkout_url": "https://punyakios.web.id/pay/8kR2mN9pLwXz4qYt",
         "external_id": "ORD-123",
         "qris_string": "00020101021226650013...",
         "amount": 10000

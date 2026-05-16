@@ -5,7 +5,7 @@ const PunyaKios = (function() {
     class SDK {
         constructor(apiKey) {
             this.apiKey = apiKey;
-            this.baseUrl = 'https://v1.maktopup.com/api/merchant';
+            this.baseUrl = 'https://punyakios.web.id/api/merchant';
         }
 
         async createPaymentRequest(data) {

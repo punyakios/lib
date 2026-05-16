@@ -4,7 +4,7 @@ namespace PunyaKios;
 
 class PunyaKios {
     private $apiKey;
-    private $baseUrl = 'https://v1.maktopup.com/api/merchant';
+    private $baseUrl = 'https://punyakios.web.id/api/merchant';
 
     public function __construct($apiKey) {
         $this->apiKey = $apiKey;

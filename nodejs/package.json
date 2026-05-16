@@ -1,0 +1,25 @@
+{
+  "name": "punyakios-sdk",
+  "version": "1.0.1",
+  "description": "Official Node.js SDK for PunyaKios Merchant API",
+  "main": "PunyaKios.js",
+  "files": [
+    "PunyaKios.js",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "punyakios",
+    "qris",
+    "payment",
+    "gateway",
+    "indonesia"
+  ],
+  "author": "PunyaKios Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
