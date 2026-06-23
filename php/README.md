@@ -48,8 +48,8 @@ use PunyaKios\PunyaKios;
 
 $data = PunyaKios::parseCallback();
 
-if ($data && $data['status'] === 'PAID') {
-    $orderId = $data['external_id'];
+if ($data && ($data['status'] === 'success' || $data['status'] === 'completed_pending_settlement')) {
+    $orderId = $data['external_id'] ?? $data['payment_id'];
     // Update status di database Anda
     
     http_response_code(200);

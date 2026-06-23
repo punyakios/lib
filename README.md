@@ -150,8 +150,8 @@ use PunyaKios\PunyaKios;
 
 $data = PunyaKios::parseCallback();
 
-if ($data && $data['status'] === 'PAID') {
-    $orderId = $data['external_id'];
+if ($data && ($data['status'] === 'success' || $data['status'] === 'completed_pending_settlement')) {
+    $orderId = $data['external_id'] ?? $data['payment_id'];
     $amount = $data['amount'];
     // Update status pesanan di database kamu
     
@@ -160,15 +160,30 @@ if ($data && $data['status'] === 'PAID') {
 ```
 
 ### Callback JSON Format
-Berikut adalah format JSON yang akan dikirimkan oleh PunyaKios ke `callback_url` kamu:
+Berikut adalah format JSON yang akan dikirimkan oleh PunyaKios ke `callback_url` kamu depending on payment method:
 
+**1. Pembayaran via Aplikasi (App Balance)**:
 ```json
 {
-    "external_id": "ORDER-101",
-    "status": "PAID",
+    "payment_id": "ORD-12345",
+    "status": "completed_pending_settlement",
+    "amount": 10000,
+    "user_email": "buyer@email.com",
+    "destination": "Merchant Name",
+    "product_name": "Pembelian Kopi",
+    "timestamp": "2026-06-23T16:42:10.173008Z",
+    "payment_request_id": 123
+}
+```
+
+**2. Pembayaran via QRIS (Xendit)**:
+```json
+{
+    "external_id": "ORD-12345",
+    "status": "success",
     "amount": 10000,
     "payment_method": "QRIS",
-    "timestamp": "2026-05-13T02:27:00.000Z"
+    "timestamp": "2026-06-23T16:37:16.825458Z"
 }
 ```
 
@@ -178,9 +193,11 @@ const PunyaKios = require('./lib/nodejs/PunyaKios');
 
 app.post('/callback', (req, res) => {
     const data = PunyaKios.parseCallback(req.body);
+    const status = data.status;
     
-    if (data.status === 'PAID') {
-        console.log(`Order ${data.external_id} LUNAS!`);
+    if (status === 'success' || status === 'completed_pending_settlement') {
+        const orderId = data.external_id || data.payment_id;
+        console.log(`Order ${orderId} LUNAS!`);
     }
     
     res.json({ message: 'OK' });

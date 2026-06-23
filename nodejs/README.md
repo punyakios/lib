@@ -74,9 +74,10 @@ app.post('/callback', (req, res) => {
     // 2. Parse Data
     const data = PunyaKios.parseCallback(body);
     
-    if (data.status === PunyaKios.STATUS.SUCCESS) {
+    if (data.status === PunyaKios.STATUS.SUCCESS || data.status === 'completed_pending_settlement') {
         // Logika saat pembayaran lunas
-        console.log(`Order ${data.external_id} Berhasil!`);
+        const orderId = data.external_id || data.payment_id;
+        console.log(`Order ${orderId} Berhasil!`);
     }
     
     res.status(200).send('OK');
